@@ -1,0 +1,96 @@
+{% extends 'master.html' %}
+
+ {% block main %} 
+
+
+    <ul class="nav nav-pills">
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="../home/">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="../brand/">Brands</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="../stock/">Stock</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="../sell/">Sell</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="#">Vendor</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../../summary/">Summary</a>
+          </li>
+      </ul>
+     
+      </ul>
+      <ul class="nav nav-underline">
+
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#" aria-disabled="true">Shipping</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="../glassFitting/">Glass Fitting</a>
+        </li>
+
+      </ul>
+      <p>
+      </p>
+      
+      <form class="row g-3" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}     
+
+        <table class="table table-striped table-bordered" id="sortTable" >
+          <thead>
+          <tr>
+            <th >Select</th>
+            <th >SellId</th>
+            <th>Selling Date</th>
+            <th>Sold To Name</th>
+            <th>Brand Name</th>
+            <th>Frame Price</th>
+            <th>Lens Price</th>
+            <th>Selling Price</th>
+
+        </tr>
+      </thead>
+        {% for item in Allitems %}
+        <tr> 
+            <td>
+                <div class="custom-control custom-checkbox">
+                    <input class="form-check-input" type="checkbox" value="{{ item.SellId }}" id="sellid" name="sellid">
+                    <label class="form-check-label" for="sellid">{{ item.SellId }}</label>
+                </div>
+              </td>
+            <td>{{ item.SellId }}</td>
+            <td>{{ item.SoldOnDate }}</td>
+            <td>{{ item.SoldToName }}</td>
+            <td>{{ item.BrandName}}</td>
+            <td>{{ item.FramePrice}}</td>
+            <td>{{ item.LensPrice }}</td>
+            <td>{{ item.SellingPrice }}</td>
+        </tr>
+        {% endfor %}
+        </table>
+
+        <div class="col-3">
+          <label for="inputShippingAMt" class="form-label">Shipping Cost*</label>
+          <input class="form-control" type="text" id="ShipingCost" name="ShipingCost">
+        </div>
+      
+        <div class="col-3">
+            <label for="inputsoldOnDate" class="form-label">Shipped on Date*</label>
+            <input class="form-control" type="date" id="ShippedOnDate" name="ShippedOnDate">
+          </div>
+    
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Send</button>
+          </div>
+      </div>
+    
+</form>
+</body>
+</html>
+
+{% endblock %}

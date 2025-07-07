@@ -1,0 +1,53 @@
+{% extends 'master.html' %}
+
+ {% block main %} 
+   
+   <ul class="nav nav-pills">
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="../../home/">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="../../brand/">Brands</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="../../stock/">Stock</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="../../sell/">Sell</a>
+        </li>
+     
+          <li class="nav-item">
+            <a class="nav-link" href="../../summary/">Summary</a>
+          </li>
+      </ul>
+      <ul class="nav nav-underline">
+        <li class="nav-item">
+          <a class="nav-link " aria-current="page" href="../../brand/" aria-disabled="true">Add New Frames</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="brandSummary/">Brands Summary</a>
+        </li>
+     
+      </ul>
+      <div class="container">
+      <table class="table table-striped table-bordered" id="sortTable">
+        <thead>
+        <tr>
+          <th>Brand Id</th>
+          <th>Brand Name</th>
+      </tr>
+    </thead>
+      {% for b in brand  %}
+      <tr> 
+          <td>{{ b.BrandId }}</td>
+          <td>{{ b.BrandName }}</td>
+      </tr>
+      {% endfor %}
+      </table>
+    </div>
+    <script>
+      $('#sortTable').DataTable();
+      </script>
+
+      {% endblock %}
+

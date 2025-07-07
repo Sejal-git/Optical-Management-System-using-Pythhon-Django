@@ -1,0 +1,56 @@
+{% extends 'master.html' %}
+
+ {% block main %} 
+    <ul class="nav nav-pills">
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="../../home/">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="../../brand/" aria-disabled="true">Brands</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="../../stock/">Stock</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="../../sell/">Sell</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="../ShippingVendor/">Vendor</a>
+        </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../../summary/">Summary</a>
+          </li>
+      </ul>
+      <ul class="nav nav-underline">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#" aria-disabled="true">Add New Frames</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="brandSummary/">Brands Summary</a>
+        </li>
+     
+      </ul>
+      <div class="container">
+      <h2>Add New Brand</h2>
+      <form class="row g-3" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="col-12">
+          <label for="inputBrandName" class="form-label">Brand Name*</label>
+          <input type="text" class="form-control" id="BrandName" name="BrandName" Required>
+        </div> 
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Add</button>
+          </div>
+      </form>
+      {% if messages %}
+      <ul class="messages">
+          {% for message in messages %}
+          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+          {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+    
+    {% endblock %}
+
+

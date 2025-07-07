@@ -1,0 +1,239 @@
+{% extends 'master.html' %}
+
+ {% block main %} 
+   
+
+<script type="text/javascript">
+     
+      var stocks = JSON.parse('{{ stocks2 | safe }}')
+      function GetAssignedPrice(){
+        var AP;
+        bid=parseInt(document.getElementById("Fbrand").value)
+        for (const item of stocks) {
+          if (item.fields.BrandId === bid) {
+              AP= item.fields.AssignedPrice;
+              break;
+          }
+        }
+        document.getElementById("AssignedFramePrice").value=AP
+        
+      } 
+
+      function GetlensPrice(){
+        document.getElementById("LensPrice").value=document.getElementById("Ltype").value;
+        val7=parseFloat(document.getElementById("AssignedFramePrice").value) +  parseFloat(document.getElementById("LensPrice").value);
+        console.log(val7)
+        document.getElementById("TotalAssigned").value=val7;
+        
+        //For lens Type
+        var skillsSelect = document.getElementById("Ltype");
+        var selectedText = skillsSelect.options[skillsSelect.selectedIndex].text;
+        document.getElementById("Lname").value=selectedText;
+        console.log(selectedText)
+      }
+      
+      function toalSellingPrice(){
+        val4=parseFloat(document.getElementById("AssignedFramePrice").value) +  parseFloat(document.getElementById("LensPrice").value);
+        console.log(val4)
+        document.getElementById("TotalAssigned").value=val4;
+        TotalSellingPriceChange()
+       
+
+    }
+    function OnDiscountChange(){
+        d=100-document.getElementById("DiscountGiven").value;
+        console.log(d)
+        document.getElementById("SellingPrice").value=((d/100)*parseFloat(document.getElementById("TotalAssigned").value)).toFixed(2);
+        //document.getElementById("SellingFramePrice").value=parseInt(document.getElementById("SellingPrice").value)- parseInt(document.getElementById("LensPrice").value);
+    }
+    
+    function TotalSellingPriceChange(){
+      val6=100-((parseFloat(document.getElementById("SellingPrice").value) /  parseFloat(document.getElementById("TotalAssigned").value))*100);
+      document.getElementById("DiscountGiven").value=parseFloat(val6).toFixed(2)
+    }
+  
+
+
+   </script>
+    <ul class="nav nav-pills">
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="../../home">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="../../brand/">Brands</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="../../stock/">Stock</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="#" aria-disabled="true">Sell</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="../ShippingVendor/">Vendor</a>
+        </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../../summary/">Summary</a>
+          </li>
+      </ul>
+      <br></br>
+      <div class=container>   
+        
+    <form class="row g-3" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <input id="Lname" name="Lname" type="hidden">
+        <div class="col-md-6">
+          <label for="inputBrand" class="form-label">Frame Brand*</label>
+          <select class="form-select" aria-label="Default select example" name="Fbrand" id="Fbrand" onchange=GetAssignedPrice() >
+            <option selected Required >Select Brand</option>
+            {%for b in Brand%}
+            <option  value="{{b.BrandId}}">{{b.BrandName}}</option>
+            {%endfor%}
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label for="inputSoldTo" class="form-label">Sold To Name*</label>
+          <input class="form-control" type="text" id="SoldTo" name="SoldTo" Required>
+        </div>
+        <!--
+        <div class="col-md-4">
+          <label for="inputLens" class="form-label">Lens Type*</label>
+          
+          <select class="form-select" aria-label="Default select example" name="Ltype" id="Ltype" onchange=GetlensPrice() >
+            <option selected Required >Select Lens</option>
+            {%for l in Lens%}
+            <option  value="{{l.LensMinCost}}">{{l.LensName}} : {{l.LensMinCost}}</option>
+            {%endfor%}
+          </select>
+        </div>
+        -->
+        
+        <div class="col-md-4">
+          <label for="inputAssginedFramePrice" class="form-label" >Assgined Frame Price*</label>
+          <input type="text" class="form-control" id="AssignedFramePrice" name="AssignedFramePrice" >
+          
+        </div>
+        <div class="col-md-4">
+          <label for="inputLensPrice" class="form-label">Lens Price*</label>
+          <input class="form-control" type="text" id="LensPrice" name="LensPrice" onchange=toalSellingPrice() Required>
+        </div>
+        
+        <div class="col-md-4">
+          <label for="inputTotalAssigned" class="form-label">Total Assigned Price</label>
+          <input class="form-control" type="text" id="TotalAssigned" name="TotalAssigned" disabled >
+        </div>
+
+          <div class="col-md-6">
+            <label for="inputSellingPrice" class="form-label">Total Selling Price*</label>
+            <input type="text" class="form-control" id="SellingPrice" name="SellingPrice" onchange=TotalSellingPriceChange() >
+          </div>
+
+          <div class="col-md-6">
+            <label for="inputDiscountGiven" class="form-label" >Discount Given*</label>
+            <input type="text" class="form-control" id="DiscountGiven" name="DiscountGiven" onchange=OnDiscountChange()>
+          </div>
+          <div class="col-md-6">
+            <label for="inputAdvancePrice" class="form-label" >Advance Amount Given*</label>
+            <input type="text" class="form-control" id="AdvancePrice" name="AdvancePrice" onchange= rp() Required>
+          </div>
+
+          <div class="col-md-6">
+            <label for="inputPay" class="form-label">Payment Method*</label>
+          <select class="form-select" aria-label="Default select example" name="PMode" id="Pmode"  >
+            <option value='Cash'>Cash</option>
+            <option value='M-Wallet'>M-Wallet</option>
+            <option value='Card'>Card</option>
+           
+          </select>
+          </div>
+
+          <div class="col-md-6">
+            <label for="inputsoldOnDate" class="form-label">Sold On Date*</label>
+            <input class="form-control" type="date" id="SoldOnDate" name="SoldOnDate">
+          </div>
+        <div class="col-md-6">
+            <label for="inputRemainingAmount" class="form-label">Remaining Amount</label>
+            <input class="form-control" type="text" id="RemainingAmount" name="RemainingAmount" disabled>
+          </div>
+          
+          <div class="col-md-6">
+            <label for="lableRightEye" class="form-label">Right Eye</label>
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Sph</th>
+                <th scope="col">Cyl</th>
+                <th scope="col">Axis</th>
+                <th scope="col">Vision</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">DIST</th>
+                <td><input class="form-control" type="text" id="distSphR" name="distSphR"> </td>
+                <td><input class="form-control" type="text" id="distCylR" name="distCylR">  </td>
+                <td><input class="form-control" type="text" id="distAxisR" name="distAxisR">  </td>
+                <td><input class="form-control" type="text" id="distVnR" name="distVnR">  </td>
+              </tr>
+              <tr>
+                <th scope="row">ADD</th>
+                <td><input class="form-control" type="text" id="AddSphR" name="AddSphR"> </td>
+                <td><input class="form-control" type="text" id="AddCylR" name="AddCylR">  </td>
+                <td><input class="form-control" type="text" id="AddAxisR" name="AddAxisR">  </td>
+                <td><input class="form-control" type="text" id="AddVnR" name="AddVnR">  </td>
+                
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-md-6">
+          <label for="lableRightEye" class="form-label">Left Eye</label>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Sph</th>
+              <th scope="col">Cyl</th>
+              <th scope="col">Axis</th>
+              <th scope="col">Vision</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">DIST</th>
+              <td><input class="form-control" type="text" id="distSphL" name="distSphL"> </td>
+                <td><input class="form-control" type="text" id="distCylL" name="distCylL">  </td>
+                <td><input class="form-control" type="text" id="distAxisL" name="distAxisL">  </td>
+                <td><input class="form-control" type="text" id="distVnL" name="distVnL">  </td>
+            </tr>
+            <tr>
+              <th scope="row">ADD</th>
+              <td><input class="form-control" type="text" id="AddSphL" name="AddSphL"> </td>
+              <td><input class="form-control" type="text" id="AddCylL" name="AddCylL">  </td>
+              <td><input class="form-control" type="text" id="AddAxisL" name="AddAxisL">  </td>
+              <td><input class="form-control" type="text" id="AddVnL" name="AddVnL">  </td>
+              
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-md-12">
+        <label for="inputTypeofGlass" class="form-label">Type of Glass</label>
+        <input class="form-control" type="text" id="TypeofGlass" name="TypeofGlass">
+      </div>
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+
+
+      </form>
+      {% if messages %}
+      <ul class="messages">
+          {% for message in messages %}
+          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+          {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+
+    {% endblock %}

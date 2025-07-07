@@ -1,0 +1,75 @@
+{% extends 'master.html' %}
+
+ {% block main %} 
+    <ul class="nav nav-pills">
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="../../home/">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="../../brand/">Brands</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="#" aria-disabled="true">Stock</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="../../sell/">Sell</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="../ShippingVendor/">Vendor</a>
+        </li>
+      
+          <li class="nav-item">
+            <a class="nav-link" href="../../summary/">Summary</a>
+          </li>
+          
+      </ul>
+      <br></br>
+      <div class=container>
+    <form class="row g-3" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+        <div class="col-md-6">
+          <label for="inputBrand" class="form-label">Frame Brand*</label>
+          <select class="form-select" aria-label="Default select example" name="Fbrand">
+            <option selected Required>Select Brand</option>
+            {%for b in Brand%}
+            <option  value="{{b.BrandId}}">{{b.BrandName}}</option>
+            {%endfor%}
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label for="inputPCount" class="form-label" >Count*</label>
+          <input type="number" class="form-control" name="FrameCount" id="FrameCount1" Required>
+        </div>
+        <div class="col-6">
+          <label for="inputPurchasePrice" class="form-label">Purchase Price*</label>
+          <input type="text" class="form-control" name="PurchasePrice" id="PurchasePrice1" onchange= pp() Required>
+        </div>
+        <div class="col-6">
+          <label for="inputTotalPurchase" class="form-label">Total Purchase Price</label>
+          <input class="form-control" type="text"  name="TotalPurchase" id="TotalPurchase1"  disabled  >
+         
+        </div>
+        <div class="col-md-6">
+          <label for="inputAssignedPrice" class="form-label">Assigned Price*</label>
+          <input type="text" class="form-control" name="AssignedPrice" id="AssignedPrice1" onchange= tp() Required>
+        </div>
+        <div class="col-md-6">
+            <label for="inputTotalAssigned" class="form-label">Total Assigned</label>
+            <input class="form-control" type="text" name = "TotalAssigned" id = "TotalAssigned1" disabled >
+          </div>
+         
+          
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+      {% if messages %}
+      <ul class="messages">
+          {% for message in messages %}
+          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+          {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+
+    {% endblock %}
